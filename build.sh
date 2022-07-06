@@ -6,7 +6,7 @@ current_hash=$(git log --pretty=format:'%h' --max-count=1)
 current_branch=$(git branch --show-current|sed 's#/#_#')
 
 version=""
-owner=`echo $owner | sed 's/\\r//g'`
+owner1=`echo $owner | sed 's/\\r//g'`
 
 create_tag() {
     if [[ ${current_branch} == "main" ]]; 
@@ -39,8 +39,8 @@ all() {
   if [[ ! -z ${version} ]];
   then
     source project.properties
-    local image_version_tag="${owner}/${project}:${version}"
-    local image_latest_tag="${owner}/${project}:latest"
+    local image_version_tag="${owner1}/${project}:${version}"
+    local image_latest_tag="${owner1}/${project}:latest"
     echo building ${image_version_tag}
     echo ${image_version_tag}
     docker build --no-cache -t ${image_version_tag} .
@@ -60,7 +60,7 @@ all() {
 
 _latest() {
   source project.properties
-  local image_latest_tag="${owner}/${project}:latest"
+  local image_latest_tag="${owner1}/${project}:latest"
   docker build --no-cache -t ${image_latest_tag} .
   docker push ${image_latest_tag}
 }
