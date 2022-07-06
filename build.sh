@@ -6,6 +6,7 @@ current_hash=$(git log --pretty=format:'%h' --max-count=1)
 current_branch=$(git branch --show-current|sed 's#/#_#')
 
 version=""
+owner=`echo $owner | sed 's/\\r//g'`
 
 create_tag() {
     if [[ ${current_branch} == "main" ]]; 
