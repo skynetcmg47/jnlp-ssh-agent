@@ -41,6 +41,7 @@ all() {
     local image_version_tag="${owner}/${project}:${version}"
     local image_latest_tag="${owner}/${project}:latest"
     echo building ${image_version_tag}
+    echo ${image_version_tag}
     docker build --no-cache -t ${image_version_tag} .
     docker push ${image_version_tag}
     docker tag ${image_version_tag} ${image_latest_tag}
