@@ -1,11 +1,6 @@
 FROM jenkins/ssh-agent:latest-alpine-jdk8
 
 RUN apk update && apk add --no-cache curl docker-cli tzdata ansible tar yarn perl openjdk11 git unzip rsync
-ENV PYTHONUNBUFFERED=1
-RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-RUN python3 -m ensurepip
-RUN pip3 install --no-cache --upgrade pip setuptools
-RUN python -m pip install awscli
 
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm/jre
 
@@ -15,9 +10,9 @@ ARG TOOLS_HOME=/opt/tools
 
 RUN mkdir -p $TOOLS_HOME/gradle && mkdir -p /opt/workspace
 
-RUN wget https://golang.org/dl/go1.18.4.linux-amd64.tar.gz && \
-tar -C $TOOLS_HOME -zxf go1.18.4.linux-amd64.tar.gz && \
-rm go1.18.4.linux-amd64.tar.gz
+RUN wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz && \
+tar -C $TOOLS_HOME -zxf go1.17.2.linux-amd64.tar.gz && \
+rm go1.17.2.linux-amd64.tar.gz
 
 RUN wget https://services.gradle.org/distributions/gradle-7.4.1-all.zip && \
 unzip -q gradle-7.4.1-all.zip -d $TOOLS_HOME/gradle && \
@@ -49,6 +44,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN mkdir -p /root/.ssh \
     && chmod 0700 /root/.ssh \
+    && passwd -u root \
     && apk add openrc \
     && echo -e "PasswordAuthentication no" >> /etc/ssh/sshd_config \
     && sed -i 's/PermitRootLogin no/PermitRootLogin yes/g' /etc/ssh/sshd_config \
